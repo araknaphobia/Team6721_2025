@@ -118,6 +118,18 @@ public final class Constants {
     public static final double kClimbSpeed = 0.5;
 
     public static final double kClimbPos = 42;
+    public static final double kStow = 0.0;
+
+       /***********************
+     * PID
+     ***********************/
+    public static final double kClimberkP = 5;
+    public static final double kClimberkI = 0;
+    public static final double kClimberkD = 0;
+    public static final double kMaxVel = 5000;
+    public static final double kMaxAccel = 6000;
+    public static final TrapezoidProfile.Constraints Constraints = new 
+    TrapezoidProfile.Constraints(kMaxVel,kMaxAccel);
   }
 
   public static final class ElevatorConstants {

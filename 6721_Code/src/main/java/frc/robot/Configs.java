@@ -1,9 +1,11 @@
 package frc.robot;
 
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
 
@@ -55,6 +57,28 @@ public final class Configs {
                     .positionWrappingInputRange(-turningFactor / 2, turningFactor / 2);
         }
     }
+
+    public static final class ClimberSubsystem {
+        public static final SparkMaxConfig climbConfig = new SparkMaxConfig();
+
+        static {
+
+                climbConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
+
+                climbConfig
+                .closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .p(ClimberConstants.kClimberkP)
+                .i(ClimberConstants.kClimberkI)
+                .d(ClimberConstants.kClimberkD)
+                .outputRange(-1, 1)
+                .maxMotion
+                .maxVelocity(ClimberConstants.kMaxVel)
+                .maxAcceleration(ClimberConstants.kMaxAccel)
+                .allowedClosedLoopError(.5);
+        }
+    }
+
     public static final class ElevatorSubsystem{
 
         public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
