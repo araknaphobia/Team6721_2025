@@ -123,9 +123,9 @@ public final class Constants {
        /***********************
      * PID
      ***********************/
-    public static final double kClimberkP = 11.25;
+    public static final double kClimberkP = 10.25;
     public static final double kClimberkI = 0;
-    public static final double kClimberkD = 0.01;
+    public static final double kClimberkD = 0.1;
     public static final double kMaxVel = 5000;
     public static final double kMaxAccel = 6000;
     public static final TrapezoidProfile.Constraints Constraints = new 
@@ -148,11 +148,12 @@ public final class Constants {
       /***********************
      * PID
      ***********************/
-    public static final double kElevatorkP = 10;
+    public static final double kElevatorkP = 0.35;
     public static final double kElevatorkI = 0;
     public static final double kElevatorkD = 0.0;
-    public static final double kMaxVel = 2000;
-    public static final double kMaxAccel = 2000;
+    public static final double kElevatorkFF = 0;
+    public static final double kMaxVel = 5000;
+    public static final double kMaxAccel = 6000;
     public static final TrapezoidProfile.Constraints Constraints = new 
     TrapezoidProfile.Constraints(kMaxVel,kMaxAccel);
     

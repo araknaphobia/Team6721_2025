@@ -94,6 +94,7 @@ public final class Configs {
                 .p(ElevatorConstants.kElevatorkP)
                 .i(ElevatorConstants.kElevatorkI)
                 .d(ElevatorConstants.kElevatorkD)
+                .velocityFF(ElevatorConstants.kElevatorkFF)
                 .outputRange(-1, 1)
                 .maxMotion
                 .maxVelocity(ElevatorConstants.kMaxVel)
