@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.*;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
@@ -35,7 +37,7 @@ public class SwerveModule extends SubsystemBase {
   // PID Controller
   private final PIDController turningPidController;
 
-  private final AnalogInput absoluteEncoder;
+  private final RelativeEncoder absoluteEncoder;
   private final boolean absoluteEncoderReversed;
   private final double absoluteEncoderOffsetRad;
   
@@ -46,16 +48,16 @@ public class SwerveModule extends SubsystemBase {
 
         this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
         this.absoluteEncoderReversed = absoluteEncoderReversed;
-        absoluteEncoder = new AnalogInput(absoluteEncoderID);
         
         driveMotor = new SparkMax(driveMotorID, MotorType.kBrushless);
         turningMotor = new SparkMax(turningMotorID, MotorType.kBrushless);
-
+        
         driveMotor.setInverted(driveMotorReversed);
         turningMotor.setInverted(turningMotorReversed); 
-
+        
         driveEncoder = driveMotor.getEncoder();
         turningEncoder = turningMotor.getEncoder();
+        absoluteEncoder = turningMotor.getAlternateEncoder();
 
        /*****************************
         Unsure what the equivalent of the below code from 0 to Auto example would be
@@ -76,7 +78,8 @@ public double getDrivePosition() {
     }
 
     public double getTurningPosition() {
-        return turningEncoder.getPosition();
+        //return turningEncoder.getPosition();
+        return absoluteEncoder.getPosition();
     }
 
     public double getDriveVelocity() {
@@ -88,7 +91,7 @@ public double getDrivePosition() {
     }
 
     public double getAbsoluteEncoderRad() {
-        double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
+        double angle = absoluteEncoder.getPosition() / 4096;
         angle *= 2.0 * Math.PI;
         angle -= absoluteEncoderOffsetRad;
         return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
@@ -116,7 +119,7 @@ public double getDrivePosition() {
         state = SwerveModuleState.optimize(state, getState().angle);
         driveMotor.set(state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
         turningMotor.set(turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
-        SmartDashboard.putString("Swerve[" + absoluteEncoder.getChannel() + "] state", state.toString());
+        SmartDashboard.putString("Swerve[" + turningMotor.getDeviceId() + "] state", state.toString());
     }
 
     public void stop() {
