@@ -165,7 +165,7 @@ public final class Constants {
 
   public static final class ActuatorConstants {
     public static final int kIntakeID = 13;
-    public static final int kBreakBeam1ID = 2;
+    public static final int kBreakBeam1ID = 0;
 
     public static final double kActuatorSpeed = 0.5;
   }
