@@ -20,10 +20,13 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Actuator;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+//import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
@@ -37,9 +40,11 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final Actuator m_Actuator = new Actuator(ActuatorConstants.kIntakeID, ActuatorConstants.kBreakBeam1ID);
+  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -55,8 +60,8 @@ public class RobotContainer {
         new RunCommand(
             () -> m_robotDrive.drive(
                 -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
   }
@@ -71,9 +76,16 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kL1.value).whileTrue(new RunCommand(
+    
+
+    //m_driverController.a().onTrue(m_ElevatorSubsystem.setSetpointCommand(Setpoint.kStow));
+
+
+    new JoystickButton(m_driverController, Button.kL2.value)
+        .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+    
 
     new JoystickButton(m_driverController, Button.kR2.value)
         .whileTrue(new RunCommand(
@@ -85,10 +97,36 @@ public class RobotContainer {
             () -> m_Actuator.score(), 
             m_Actuator));
 
-    // new JoystickButton(m_driverController, Button.kL1.value)
-    //     .whileTrue(new RunCommand(
-    //         () -> m_Actuator.purge(), 
-    //         m_Actuator));
+    new JoystickButton(m_driverController, Button.kL1.value)
+         .whileTrue(new RunCommand(
+             () -> m_Actuator.purge(), 
+             m_Actuator));
+            
+    new JoystickButton(m_driverController, Button.kCircle.value)
+            .whileTrue(new RunCommand(
+              () -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL1), 
+            m_ElevatorSubsystem));
+  
+    new JoystickButton(m_driverController, Button.kSquare.value)
+            .whileTrue(new RunCommand(
+              () -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL2), 
+            m_ElevatorSubsystem));
+           
+    new JoystickButton(m_driverController, Button.kTriangle.value)
+            .whileTrue(new RunCommand(
+              () -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL3), 
+            m_ElevatorSubsystem));
+    
+    new JoystickButton(m_driverController, Button.kCross.value)
+            .whileTrue(new RunCommand(
+              () -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL4), 
+            m_ElevatorSubsystem));
+
+    new JoystickButton(m_driverController, Button.kOptions.value)
+            .whileTrue(new RunCommand(
+              () -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kStow), 
+            m_ElevatorSubsystem));
+            
 
 
   }

@@ -4,6 +4,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
 
 public final class Configs {
@@ -53,5 +54,28 @@ public final class Configs {
                     .positionWrappingEnabled(true)
                     .positionWrappingInputRange(-turningFactor / 2, turningFactor / 2);
         }
+    }
+    public static final class ElevatorSubsystem{
+
+        public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig elevatorFollower = new SparkMaxConfig();
+
+        static {
+
+                elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
+
+                elevatorConfig
+                .closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .p(ElevatorConstants.kElevatorkP)
+                .i(ElevatorConstants.kElevatorkI)
+                .d(ElevatorConstants.kElevatorkD)
+                .outputRange(-1, 1)
+                .maxMotion
+                .maxVelocity(ElevatorConstants.kMaxVel)
+                .maxAcceleration(ElevatorConstants.kMaxAccel)
+                .allowedClosedLoopError(.5);
+        }
+
     }
 }

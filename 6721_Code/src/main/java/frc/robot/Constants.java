@@ -4,10 +4,14 @@
 
 package frc.robot;
 
+
+
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.event.EventLoop;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -25,7 +29,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 1.5;//4.8;
+    public static final double kMaxSpeedMetersPerSecond = 4.8;//4.8;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
@@ -82,7 +86,10 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
+    
     public static final double kDriveDeadband = 0.05;
+    
   }
 
   public static final class AutoConstants {
@@ -114,17 +121,33 @@ public final class Constants {
   }
 
   public static final class ElevatorConstants {
-    public static final int kLift1ID = 11;
-    public static final int kLift2ID = 12;
+    public static final int kElevator1ID = 11;
+    public static final int kElevator2ID = 12;
 
     public static final double kStow = 0.0;
-    public static final double kLevel1 = 5.0;
-    public static final double kLevel2 = 10.0;
-    public static final double kLevel3 = 15.0;
-    public static final double kLevel4 = 20.0;
+    public static final double kL1 = 5.0;
+    public static final double kL2 = 10.0;
+    public static final double kL3 = 15.0;
+    public static final double kL4 = 20.0;
 
     //Elevator gear ratio is 16:1
     public static final double kElevTestSpeed = 0.5;
+
+      /***********************
+     * PID
+     ***********************/
+    public static final double kElevatorkP = 5;
+    public static final double kElevatorkI = 0;
+    public static final double kElevatorkD = 0;
+    public static final double kMaxVel = 5000;
+    public static final double kMaxAccel = 6000;
+    public static final TrapezoidProfile.Constraints Constraints = new 
+    TrapezoidProfile.Constraints(kMaxVel,kMaxAccel);
+    
+    
+
+    
+    
 
   }
 
