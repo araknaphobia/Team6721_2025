@@ -77,5 +77,10 @@ public final class Configs {
                 .allowedClosedLoopError(.5);
         }
 
+        static {
+
+                elevatorFollower.follow(ElevatorConstants.kElevator1ID, true);
+        }
+
     }
 }
