@@ -61,8 +61,17 @@ public class SwerveSubsystem extends SubsystemBase {
     DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
   
     private final Pigeon2 gyro = new Pigeon2(DriveConstants.kPigeonPort);
-    private final SwerveDriveOdometry odometer;// = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0));
-    private final SwerveModuleState SwerveState;
+    /*/
+    private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(
+      DriveConstants.kDriveKinematics, 
+      new Rotation2d(0), new SwerveModulePosition[] {
+      frontLeft.getDrivePosition(),
+      frontRight.getPosition(),
+      backLeft.getPosition(),
+      backRight.getPosition()},
+      new Pose2d());
+      */
+    //private final SwerveModuleState SwerveState;
 
   /** Creates a new SwerveSubsystem. */
   public SwerveSubsystem() {
@@ -86,9 +95,9 @@ public class SwerveSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(getHeading());
   }
 
-  public Pose2d getPose() {
-    return odometer.getPoseMeters();
-  }
+  // public Pose2d getPose() {
+  //  return odometer.getPoseMeters();
+  // }
 
   // public void resetOdometry(Pose2d pose) {
   //   odometer.resetPosition(getRotation2d(), pose);;
@@ -100,7 +109,7 @@ public class SwerveSubsystem extends SubsystemBase {
     //updateStates(frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState());
     //odometer.update(getRotation2d(), this.SwerveState);
     SmartDashboard.putNumber("Robot Heading", getHeading());
-    SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+    //SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
   }
 
   public void stopModules() {

@@ -29,17 +29,25 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
-  private final CommandXboxController driverJoystick = new CommandXboxController(OIConstants.kDriverControllerPort);
+  private final XboxController driverJoystick = new XboxController(OIConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    /* */
+    /*
     swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
       swerveSubsystem,
       () -> -driverJoystick.getraw(OIConstants.kDriverYAxis),
       () -> driverJoystick.getRawAxis(OIConstants.kDriverXAxis),
       () -> driverJoystick.getRawAxis(OIConstants.kDriverRotAxis),
       () -> !driverJoystick.getRawButton(OIConstants.kDriverFieldOrientedButtonIdx)));
+       */
+
+      swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
+      swerveSubsystem, 
+      () -> -driverJoystick.getLeftY(), 
+      () -> driverJoystick.getLeftX(), 
+      () -> driverJoystick.getRightX(), 
+      () -> !driverJoystick.getYButton()));
 
     // Configure the trigger bindings
     configureBindings();
@@ -55,7 +63,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    new JoystickButton(driverJoystick, 3);
   }
 
   /**
@@ -64,5 +72,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    return null;
   }
 }
