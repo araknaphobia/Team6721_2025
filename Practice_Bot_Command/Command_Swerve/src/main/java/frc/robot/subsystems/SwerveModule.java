@@ -91,15 +91,15 @@ public double getDrivePosition() {
     }
 
     public double getAbsoluteEncoderRad() {
-        double angle = absoluteEncoder.getPosition() / 4096;
-        angle *= 2.0 * Math.PI;
+        double angle = absoluteEncoder.getPosition();// / 4096;
+        //angle *= 2.0 * Math.PI;
         angle -= absoluteEncoderOffsetRad;
-        return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
+        return angle/2 * (absoluteEncoderReversed ? -1.0 : 1.0);
     }
 
     public void resetEncoders() {
         driveEncoder.setPosition(0);
-        turningEncoder.setPosition(getAbsoluteEncoderRad());
+        absoluteEncoder.setPosition(0);//getAbsoluteEncoderRad());
     }
 
     public SwerveModuleState getState() {
@@ -125,5 +125,9 @@ public double getDrivePosition() {
     public void stop() {
         driveMotor.set(0);
         turningMotor.set(0);
+    }
+
+    public void calibrate() {
+        SmartDashboard.putNumber("Encoder " + turningMotor.getDeviceId() + " Absolute Encoder: ", absoluteEncoder.getPosition()/2);
     }
 }
