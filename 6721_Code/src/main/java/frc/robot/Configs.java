@@ -33,11 +33,12 @@ public final class Configs {
 
             turningConfig
                     .idleMode(IdleMode.kBrake)
+                    .inverted(true)
                     .smartCurrentLimit(20);
             turningConfig.absoluteEncoder
                     // Invert the turning encoder, since the output shaft rotates in the opposite
                     // direction of the steering motor in the MAXSwerve Module.
-                    .inverted(true)
+                    .inverted(false)
                     .positionConversionFactor(turningFactor) // radians
                     .velocityConversionFactor(turningFactor / 60.0); // radians per second
             turningConfig.closedLoop
@@ -50,7 +51,7 @@ public final class Configs {
                     // to 10 degrees will go through 0 rather than the other direction which is a
                     // longer route.
                     .positionWrappingEnabled(true)
-                    .positionWrappingInputRange(0, turningFactor);
+                    .positionWrappingInputRange(-turningFactor / 2, turningFactor / 2);
         }
     }
 }

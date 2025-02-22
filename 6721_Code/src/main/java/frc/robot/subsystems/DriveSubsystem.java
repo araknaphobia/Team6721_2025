@@ -27,24 +27,28 @@ import static edu.wpi.first.units.Units.*;
 public class DriveSubsystem extends SubsystemBase {
     // Create MAXSwerveModules
     private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
+            0,
             DriveConstants.kFrontLeftDrivingCanId,
             DriveConstants.kFrontLeftTurningCanId,
             false,
             0.0);
 
     private final MAXSwerveModule m_frontRight = new MAXSwerveModule(
+            1,
             DriveConstants.kFrontRightDrivingCanId,
             DriveConstants.kFrontRightTurningCanId,
             true,
             0.0);
 
     private final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
+            2,
             DriveConstants.kRearLeftDrivingCanId,
             DriveConstants.kRearLeftTurningCanId,
             false,
             0.0);
 
     private final MAXSwerveModule m_rearRight = new MAXSwerveModule(
+            3,
             DriveConstants.kRearRightDrivingCanId,
             DriveConstants.kRearRightTurningCanId,
             true,
@@ -135,30 +139,11 @@ public class DriveSubsystem extends SubsystemBase {
                                 m_odometry.getPoseMeters().getRotation())
                         // Rotation2d.fromDegrees(m_gyro.getYaw().getValue().in(Degrees)))
                         : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
-        
-
-
-        swerveModuleStates[0].optimize(m_frontLeft.getState().angle);
-        swerveModuleStates[1].optimize(m_frontRight.getState().angle);
-        swerveModuleStates[2].optimize(m_rearLeft.getState().angle);
-        swerveModuleStates[3].optimize(m_rearRight.getState().angle);
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
             swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
 
-        if(rot != 0){
-            swerveModuleStates[0].angle = swerveModuleStates[0].angle.plus(Rotation2d.kCCW_90deg);
-            swerveModuleStates[1].angle = swerveModuleStates[1].angle.plus(Rotation2d.kCW_90deg);
-            swerveModuleStates[2].angle = swerveModuleStates[2].angle.plus(Rotation2d.kCW_90deg);
-            swerveModuleStates[3].angle = swerveModuleStates[3].angle.plus(Rotation2d.kCCW_90deg);
-        }
 
-
-
-        SmartDashboard.putNumber("M0", swerveModuleStates[0].angle.getDegrees());
-        SmartDashboard.putNumber("M1", swerveModuleStates[1].angle.getDegrees());
-        SmartDashboard.putNumber("M2", swerveModuleStates[2].angle.getDegrees());
-        SmartDashboard.putNumber("M3", swerveModuleStates[3].angle.getDegrees());
 
         m_frontLeft.setDesiredState(swerveModuleStates[0]);
         m_frontRight.setDesiredState(swerveModuleStates[1]);
