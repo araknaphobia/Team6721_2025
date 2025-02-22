@@ -14,7 +14,6 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.Joystick.ButtonType;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.ActuatorConstants;
 import frc.robot.Constants.AutoConstants;
@@ -72,8 +71,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kL2.value)
-        .whileTrue(new RunCommand(
+    new JoystickButton(m_driverController, Button.kL1.value).whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
 
@@ -87,10 +85,10 @@ public class RobotContainer {
             () -> m_Actuator.score(), 
             m_Actuator));
 
-    new JoystickButton(m_driverController, Button.kL1.value)
-        .whileTrue(new RunCommand(
-            () -> m_Actuator.purge(), 
-            m_Actuator));
+    // new JoystickButton(m_driverController, Button.kL1.value)
+    //     .whileTrue(new RunCommand(
+    //         () -> m_Actuator.purge(), 
+    //         m_Actuator));
 
 
   }
