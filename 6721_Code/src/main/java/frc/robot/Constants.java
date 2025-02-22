@@ -105,17 +105,33 @@ public final class Constants {
   }
 
   public static final class ClimberConstants {
-    public static final double kClimberID = 10;
-    public static final double kPhotoID = 1;
+    public static final int kClimberID = 10;
+    public static final int kPhotoID = 1;
+
+    public static final double kClimbSpeed = 0.5;
+
+    public static final double kClimbPos = 42;
   }
 
   public static final class ElevatorConstants {
-    public static final double kLift1ID = 11;
-    public static final double kLift2ID = 12;
+    public static final int kLift1ID = 11;
+    public static final int kLift2ID = 12;
+
+    public static final double kStow = 0.0;
+    public static final double kLevel1 = 5.0;
+    public static final double kLevel2 = 10.0;
+    public static final double kLevel3 = 15.0;
+    public static final double kLevel4 = 20.0;
+
+    //Elevator gear ratio is 16:1
+    public static final double kElevTestSpeed = 0.5;
+
   }
 
   public static final class ActuatorConstants {
-    public static final double kIntakeID = 13;
-    public static final double kPhotoID = 2;
+    public static final int kIntakeID = 13;
+    public static final int kBreakBeam1ID = 2;
+
+    public static final double kActuatorSpeed = 0.5;
   }
 }

@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
@@ -30,15 +31,22 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void ElevatorUp() {
-
+    m_elev1Motor.set(ElevatorConstants.kElevTestSpeed);
+    m_elev2Motor.set(-ElevatorConstants.kElevTestSpeed);
   }
 
   public void ElevatorUp(double position) {
-
+    //PID loop goes here. Look at last year's code
   }
 
   public void ElevatorDown() {
+    m_elev1Motor.set(-ElevatorConstants.kElevTestSpeed);
+    m_elev2Motor.set(ElevatorConstants.kElevTestSpeed);
+  }
 
+  public void ElevatorStop() {
+    m_elev1Motor.stopMotor();
+    m_elev2Motor.stopMotor();
   }
   
 
