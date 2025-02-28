@@ -15,18 +15,22 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
+import frc.robot.Configs.ClimberSubsystem;
 import frc.robot.Constants.ActuatorConstants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Actuator;
+import frc.robot.subsystems.ClimberSystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ClimberSystem.climbSetpoint;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-//import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
@@ -41,10 +45,11 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final Actuator m_Actuator = new Actuator(ActuatorConstants.kIntakeID, ActuatorConstants.kBreakBeam1ID);
   private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
+  private final ClimberSystem m_ClimberSubsystem = new ClimberSystem(ClimberConstants.kPhotoID);
 
   // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
+  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -76,58 +81,34 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    // Driver Controller
+
+    m_driverController.leftBumper().whileTrue(new RunCommand(
+      () -> m_robotDrive.setX(), 
+      m_robotDrive));
     
+    m_driverController.rightBumper().whileTrue(m_Actuator.load());
 
-    //m_driverController.a().onTrue(m_ElevatorSubsystem.setSetpointCommand(Setpoint.kStow));
-
-
-    new JoystickButton(m_driverController, Button.kL2.value)
-        .whileTrue(new RunCommand(
-            () -> m_robotDrive.setX(),
-            m_robotDrive));
-    
-
-    new JoystickButton(m_driverController, Button.kR2.value)
-        .whileTrue(new RunCommand(
-            () -> m_Actuator.load(),
-            m_Actuator));
-
-    new JoystickButton(m_driverController, Button.kR1.value)
-        .whileTrue(new RunCommand(
-            () -> m_Actuator.score(), 
-            m_Actuator));
-
-    new JoystickButton(m_driverController, Button.kL1.value)
-         .whileTrue(new RunCommand(
-             () -> m_Actuator.purge(), 
-             m_Actuator));
+    m_driverController.rightTrigger().whileTrue(m_Actuator.score());
             
-    new JoystickButton(m_driverController, Button.kCircle.value)
-            .whileTrue(new RunCommand(
-              () -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL1), 
-            m_ElevatorSubsystem));
-  
-    new JoystickButton(m_driverController, Button.kSquare.value)
-            .whileTrue(new RunCommand(
-              () -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL2), 
-            m_ElevatorSubsystem));
-           
-    new JoystickButton(m_driverController, Button.kTriangle.value)
-            .whileTrue(new RunCommand(
-              () -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL3), 
-            m_ElevatorSubsystem));
-    
-    new JoystickButton(m_driverController, Button.kCross.value)
-            .whileTrue(new RunCommand(
-              () -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL4), 
-            m_ElevatorSubsystem));
+    m_driverController.leftTrigger().whileTrue(m_Actuator.purge());
 
-    new JoystickButton(m_driverController, Button.kOptions.value)
-            .whileTrue(new RunCommand(
-              () -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kStow), 
-            m_ElevatorSubsystem));
+    // Operator Controller
+
+    m_operatorController.rightTrigger().whileTrue(m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL1));
+
+    m_operatorController.b().whileTrue(m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL2));
+
+    m_operatorController.a().whileTrue(m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL3));
+
+    m_operatorController.leftTrigger().whileTrue(m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL4));
+
+    m_operatorController.rightBumper().whileTrue(m_ElevatorSubsystem.setSetpointCommand(Setpoint.kStow));
             
+    m_operatorController.x().whileTrue(m_ClimberSubsystem.setSetpointCommand(climbSetpoint.kClimbPos));
 
+    m_operatorController.leftBumper().whileTrue(m_ClimberSubsystem.setSetpointCommand(climbSetpoint.kStow));
 
   }
 
@@ -145,13 +126,13 @@ public class RobotContainer {
         .setKinematics(DriveConstants.kDriveKinematics);
 
     // An example trajectory to follow. All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+    Trajectory leftDiagonalTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        // Pass through these two interior waypoints, making left diagonal
+        List.of(new Translation2d(.5, .5), new Translation2d(1, 1)),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
+        new Pose2d(3, 2, new Rotation2d(0)),
         config);
 
     var thetaController = new ProfiledPIDController(
@@ -159,7 +140,7 @@ public class RobotContainer {
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-        exampleTrajectory,
+        leftDiagonalTrajectory,
         m_robotDrive::getPose, // Functional interface to feed supplier
         DriveConstants.kDriveKinematics,
 
@@ -171,7 +152,7 @@ public class RobotContainer {
         m_robotDrive);
 
     // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+    m_robotDrive.resetOdometry(leftDiagonalTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));

@@ -30,7 +30,7 @@ public class ClimberSystem extends SubsystemBase {
   private double climberCurrentTarget = ClimberConstants.kClimbPos;
   private SparkClosedLoopController climbClosedLoopController = m_climbMotor.getClosedLoopController();
 
-  public enum Setpoint {
+  public enum climbSetpoint {
     kStow,
     kClimbPos,
   }
@@ -55,7 +55,7 @@ public class ClimberSystem extends SubsystemBase {
     );
   }
 
-   public Command setSetpointCommand(Setpoint setpoint){
+   public Command setSetpointCommand(climbSetpoint setpoint){
       return this.runOnce(
         () -> {
           switch (setpoint){
