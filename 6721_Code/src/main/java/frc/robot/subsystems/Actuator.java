@@ -38,11 +38,11 @@ public class Actuator extends SubsystemBase {
   }
 
     public void ActuatorIn() {
-    m_intakeSparkMax.set(ActuatorConstants.kActuatorSpeed);
+    m_intakeSparkMax.set(-ActuatorConstants.kActuatorSpeed);
   }
 
   public void ActuatorOut() {
-    m_intakeSparkMax.set(-ActuatorConstants.kActuatorSpeed);
+    m_intakeSparkMax.set(ActuatorConstants.kActuatorSpeed);
   }
 
   public Command load(){

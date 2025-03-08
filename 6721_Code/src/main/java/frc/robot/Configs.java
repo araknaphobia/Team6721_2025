@@ -86,7 +86,7 @@ public final class Configs {
 
         static {
 
-                elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
+                elevatorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12).inverted(false);
 
                 elevatorConfig
                 .closedLoop
@@ -102,7 +102,7 @@ public final class Configs {
         }
 
         static {
-
+                elevatorFollower.inverted(false);
                 elevatorFollower.follow(ElevatorConstants.kElevator1ID, true);
         }
 

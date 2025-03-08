@@ -117,7 +117,7 @@ public final class Constants {
 
     public static final double kClimbSpeed = 0.5;
 
-    public static final double kClimbPos = 42;
+    public static final double kClimbPos = 190;
     public static final double kStow = 0.0;
 
        /***********************
@@ -126,8 +126,8 @@ public final class Constants {
     public static final double kClimberkP = 5;
     public static final double kClimberkI = 0;
     public static final double kClimberkD = 0;
-    public static final double kMaxVel = 5000;
-    public static final double kMaxAccel = 6000;
+    public static final double kMaxVel = 2000;
+    public static final double kMaxAccel = 3000;
     public static final TrapezoidProfile.Constraints Constraints = new 
     TrapezoidProfile.Constraints(kMaxVel,kMaxAccel);
   }
@@ -138,9 +138,9 @@ public final class Constants {
 
     public static final double kStow = 0.0;
     public static final double kL1 = 5.0;
-    public static final double kL2 = 10.0;
-    public static final double kL3 = 15.0;
-    public static final double kL4 = 20.0;
+    public static final double kL2 = 15.0;
+    public static final double kL3 = 28.0;
+    public static final double kL4 = 57.0;
 
     //Elevator gear ratio is 16:1
     public static final double kElevTestSpeed = 0.5;
@@ -151,8 +151,8 @@ public final class Constants {
     public static final double kElevatorkP = 5;
     public static final double kElevatorkI = 0;
     public static final double kElevatorkD = 0;
-    public static final double kMaxVel = 5000;
-    public static final double kMaxAccel = 6000;
+    public static final double kMaxVel = 1000;
+    public static final double kMaxAccel = 2000;
     public static final TrapezoidProfile.Constraints Constraints = new 
     TrapezoidProfile.Constraints(kMaxVel,kMaxAccel);
     

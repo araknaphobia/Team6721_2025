@@ -64,9 +64,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
   }
@@ -88,9 +88,9 @@ public class RobotContainer {
       () -> m_robotDrive.setX(), 
       m_robotDrive));
     
-    m_driverController.rightBumper().whileTrue(m_Actuator.load());
+    m_driverController.rightTrigger().whileTrue(m_Actuator.load());
 
-    m_driverController.rightTrigger().whileTrue(m_Actuator.score());
+    m_driverController.rightBumper().whileTrue(m_Actuator.score());
             
     m_driverController.leftTrigger().whileTrue(m_Actuator.purge());
 
@@ -126,13 +126,13 @@ public class RobotContainer {
         .setKinematics(DriveConstants.kDriveKinematics);
 
     // An example trajectory to follow. All units in meters.
-    Trajectory leftDiagonalTrajectory = TrajectoryGenerator.generateTrajectory(
+    Trajectory straightTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making left diagonal
-        List.of(new Translation2d(.5, .5), new Translation2d(1, 1)),
+        List.of(new Translation2d(.25, 0 ), new Translation2d(1, 0)),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 2, new Rotation2d(0)),
+        new Pose2d(1.5, 0, new Rotation2d(0)),
         config);
 
     var thetaController = new ProfiledPIDController(
@@ -140,7 +140,7 @@ public class RobotContainer {
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-        leftDiagonalTrajectory,
+        straightTrajectory,
         m_robotDrive::getPose, // Functional interface to feed supplier
         DriveConstants.kDriveKinematics,
 
@@ -152,9 +152,9 @@ public class RobotContainer {
         m_robotDrive);
 
     // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(leftDiagonalTrajectory.getInitialPose());
+    m_robotDrive.resetOdometry(straightTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false)).andThen(() -> m_Actuator.ActuatorIn());
   }
 }
