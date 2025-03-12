@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 
 
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 
@@ -72,6 +74,26 @@ public class ElevatorSubsystem extends SubsystemBase {
         ControlType.kMAXMotionPositionControl
       );
 
+    }
+
+    public BooleanSupplier autoElevPos = () ->{
+    return elevatorPosition(57);
+  };
+
+    public boolean elevatorPosition(double pos)
+    {
+      double currPos = elevatorEncoder.getPosition();
+      double high = pos + 10;
+      double low = pos -10;
+      
+      if((currPos > low) && (currPos < high))
+      {
+        return true;
+      }
+      else 
+      {
+        return true;
+      }
     }
 
     private void zeroElevatorOnUserButton(){

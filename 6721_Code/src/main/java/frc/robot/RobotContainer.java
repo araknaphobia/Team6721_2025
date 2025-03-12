@@ -20,6 +20,7 @@ import frc.robot.Constants.ActuatorConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Actuator;
 import frc.robot.subsystems.ClimberSystem;
@@ -129,9 +130,9 @@ public class RobotContainer {
     Trajectory straightTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making left diagonal
+        // Pass through these two interior waypoints, making straight line
         List.of(new Translation2d(.25, 0 ), new Translation2d(1, 0)),
-        // End 3 meters straight ahead of where we started, facing forward
+        // End 1.5 meters straight ahead of where we started, facing forward
         new Pose2d(1.5, 0, new Rotation2d(0)),
         config);
 
@@ -155,6 +156,11 @@ public class RobotContainer {
     m_robotDrive.resetOdometry(straightTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false)).andThen(() -> m_Actuator.ActuatorIn());
+    
+    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false))
+                                  .andThen(() -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL4))
+                                  .until(m_ElevatorSubsystem.autoElevPos)
+                                  .andThen(() -> m_Actuator.ActuatorIn());
+                              
   }
 }
