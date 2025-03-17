@@ -123,11 +123,11 @@ public final class Constants {
        /***********************
      * PID
      ***********************/
-    public static final double kClimberkP = 5;
+    public static final double kClimberkP = 11.25;
     public static final double kClimberkI = 0;
-    public static final double kClimberkD = 0;
-    public static final double kMaxVel = 2000;
-    public static final double kMaxAccel = 3000;
+    public static final double kClimberkD = 0.01;
+    public static final double kMaxVel = 5000;
+    public static final double kMaxAccel = 6000;
     public static final TrapezoidProfile.Constraints Constraints = new 
     TrapezoidProfile.Constraints(kMaxVel,kMaxAccel);
   }
@@ -140,18 +140,18 @@ public final class Constants {
     public static final double kL1 = 5.0;
     public static final double kL2 = 15.0;
     public static final double kL3 = 28.0;
-    public static final double kL4 = 57.0;
+    public static final double kL4 = 59.0;
 
-    //Elevator gear ratio is 16:1
-    public static final double kElevTestSpeed = 0.5;
+    //Elevator gear ratio is 12:1
+    public static final double kElevTestSpeed = 0.1;
 
       /***********************
      * PID
      ***********************/
-    public static final double kElevatorkP = 5;
+    public static final double kElevatorkP = 10;
     public static final double kElevatorkI = 0;
-    public static final double kElevatorkD = 0;
-    public static final double kMaxVel = 1000;
+    public static final double kElevatorkD = 0.0;
+    public static final double kMaxVel = 2000;
     public static final double kMaxAccel = 2000;
     public static final TrapezoidProfile.Constraints Constraints = new 
     TrapezoidProfile.Constraints(kMaxVel,kMaxAccel);
@@ -167,6 +167,6 @@ public final class Constants {
     public static final int kIntakeID = 13;
     public static final int kBreakBeam1ID = 0;
 
-    public static final double kActuatorSpeed = 0.5;
+    public static final double kActuatorSpeed = 0.75;
   }
 }

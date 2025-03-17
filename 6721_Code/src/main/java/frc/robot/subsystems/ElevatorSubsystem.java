@@ -23,6 +23,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
+import frc.robot.Constants.ActuatorConstants;
 import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -79,6 +80,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     public BooleanSupplier autoElevPos = () ->{
     return elevatorPosition(57);
   };
+
+  
 
     public boolean elevatorPosition(double pos)
     {

@@ -89,11 +89,13 @@ public class RobotContainer {
       () -> m_robotDrive.setX(), 
       m_robotDrive));
     
-    m_driverController.rightTrigger().whileTrue(m_Actuator.load());
+    m_driverController.rightBumper().whileTrue(m_Actuator.load());
 
-    m_driverController.rightBumper().whileTrue(m_Actuator.score());
+    m_driverController.rightTrigger().whileTrue(m_Actuator.score());
             
     m_driverController.leftTrigger().whileTrue(m_Actuator.purge());
+
+    
 
     // Operator Controller
 
@@ -158,8 +160,8 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
     
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false))
-                                  .andThen(() -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL4))
-                                  .until(m_ElevatorSubsystem.autoElevPos)
+                                  //.andThen(() -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL4))
+                                  //.until(m_ElevatorSubsystem.autoElevPos)
                                   .andThen(() -> m_Actuator.ActuatorIn());
                               
   }

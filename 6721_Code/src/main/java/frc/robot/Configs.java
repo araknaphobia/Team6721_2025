@@ -98,7 +98,7 @@ public final class Configs {
                 .maxMotion
                 .maxVelocity(ElevatorConstants.kMaxVel)
                 .maxAcceleration(ElevatorConstants.kMaxAccel)
-                .allowedClosedLoopError(.5);
+                .allowedClosedLoopError(.2);
         }
 
         static {
