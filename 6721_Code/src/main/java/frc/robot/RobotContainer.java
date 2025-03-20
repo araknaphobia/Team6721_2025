@@ -33,6 +33,9 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import static edu.wpi.first.units.Units.derive;
+
 import java.util.List;
 
 /*
@@ -45,7 +48,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final Actuator m_Actuator = new Actuator(ActuatorConstants.kIntakeID, ActuatorConstants.kBreakBeam1ID);
-  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
+  public final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
   private final ClimberSystem m_ClimberSubsystem = new ClimberSystem(ClimberConstants.kPhotoID);
 
   // The driver's controller
@@ -94,6 +97,12 @@ public class RobotContainer {
     m_driverController.rightTrigger().whileTrue(m_Actuator.score());
             
     m_driverController.leftTrigger().whileTrue(m_Actuator.purge());
+
+    m_driverController.a().whileTrue(m_ElevatorSubsystem.autoMoveElevatorL4());
+
+    m_driverController.x().whileTrue(m_ElevatorSubsystem.elevatorDown());
+
+    m_driverController.y().whileTrue(m_ElevatorSubsystem.elevatorUp());
 
     
 
@@ -159,10 +168,13 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false))
-                                  //.andThen(() -> m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL4))
-                                  //.until(m_ElevatorSubsystem.autoElevPos)
-                                  .andThen(() -> m_Actuator.ActuatorIn());
+    return swerveControllerCommand.andThen(m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL4))
+                                  .andThen(() -> m_robotDrive.drive(0, 0, 0, false))
+                                  .andThen(m_Actuator.AutoWait())
+                                  .andThen(() -> m_Actuator.ActuatorIn())
+                                  .andThen(m_Actuator.AutoWait())
+                                  .andThen(() -> m_Actuator.StopActuator());
+                                  
                               
   }
 }

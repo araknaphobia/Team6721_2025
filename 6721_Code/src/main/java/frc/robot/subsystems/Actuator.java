@@ -61,6 +61,10 @@ public class Actuator extends SubsystemBase {
     m_intakeSparkMax.stopMotor();
   }
 
+  public Command AutoWait(){
+    return Commands.waitSeconds(3);
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Intake Breakbeam", m_breakBeam1.get());

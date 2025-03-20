@@ -21,6 +21,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants.ActuatorConstants;
@@ -69,7 +70,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorEncoder.setPosition(0);
   }
 
-    private void moveToSetpoint(){
+    public void moveToSetpoint(){
       elevator1ClosedLoopController.setReference(
         elevatorCurrentTarget,
         ControlType.kMAXMotionPositionControl
@@ -79,26 +80,53 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public BooleanSupplier autoElevPos = () ->{
-    return elevatorPosition(57);
+    return elevatorPosition(24);
   };
+  
 
   
 
     public boolean elevatorPosition(double pos)
     {
-      double currPos = elevatorEncoder.getPosition();
-      double high = pos + 10;
-      double low = pos -10;
+      double currentPos = elevatorEncoder.getPosition();
       
-      if((currPos > low) && (currPos < high))
+      if((currentPos > 24))
       {
-        return true;
+        return false;
       }
       else 
       {
         return true;
       }
     }
+
+    public void ElevatorUp() {
+      elevatorMotor1.set(ElevatorConstants.kElevTestSpeed);
+      
+    }
+
+    public void ElevatorDown() {
+      elevatorMotor1.set(-ElevatorConstants.kElevTestSpeed);
+      
+    }
+
+    public void StopElevator() {
+      elevatorMotor1.stopMotor();
+      elevatorMotor2.stopMotor();
+    }
+
+    public Command elevatorUp(){
+      return Commands.startEnd(this::ElevatorUp,this::StopElevator , this);
+    }
+
+    public Command elevatorDown(){
+      return Commands.startEnd(this::ElevatorDown,this::StopElevator , this);
+    }
+
+    public Command autoMoveElevatorL4(){
+      return Commands.startEnd(this::ElevatorUp, this::StopElevator, this).until(autoElevPos);
+    }
+
 
     private void zeroElevatorOnUserButton(){
       if (!wasResetByButton && RobotController.getUserButton()){
