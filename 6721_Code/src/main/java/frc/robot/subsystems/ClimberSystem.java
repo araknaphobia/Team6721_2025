@@ -15,6 +15,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants.ClimberConstants;
@@ -47,6 +48,25 @@ public class ClimberSystem extends SubsystemBase {
   public void ClimbUp() {
     m_climbMotor.set(ClimberConstants.kClimbSpeed);
   }
+  public void ClimbDown() {
+    m_climbMotor.set(-ClimberConstants.kClimbSpeed);
+  }
+
+  public boolean GetPhotoeye() {
+    return m_photoEye.get();
+  }
+
+  public void StopClimb() {
+    m_climbMotor.stopMotor();
+  }
+
+  public Command Climb(){
+    return Commands.startEnd(this::ClimbUp, this::StopClimb, this);
+  }
+
+  public Command Down(){
+    return Commands.startEnd(this::ClimbDown, this::StopClimb,this);
+  }
 
   private void moveToSetpoint(){
     climbClosedLoopController.setReference(
@@ -70,24 +90,14 @@ public class ClimberSystem extends SubsystemBase {
       );
     } 
 
-  public void ClimbDown() {
-    m_climbMotor.set(-ClimberConstants.kClimbSpeed);
-  }
-
-  public boolean GetPhotoeye() {
-    return m_photoEye.get();
-  }
-
-  public void StopClimb() {
-    m_climbMotor.stopMotor();
-  }
+  
 
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
-    moveToSetpoint();
+    //moveToSetpoint();
     
     SmartDashboard.putNumber("Elevator Target Position" , climberCurrentTarget);
     SmartDashboard.putNumber("Elevator Actual Position" , m_climbEncoder.getPosition());

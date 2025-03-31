@@ -93,8 +93,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 2;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 1;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
@@ -115,7 +115,7 @@ public final class Constants {
     public static final int kClimberID = 10;
     public static final int kPhotoID = 1;
 
-    public static final double kClimbSpeed = 0.5;
+    public static final double kClimbSpeed = .85;
 
     public static final double kClimbPos = 190;
     public static final double kStow = 0.0;
@@ -138,9 +138,9 @@ public final class Constants {
 
     public static final double kStow = 0.0;
     public static final double kL1 = 5.0;
-    public static final double kL2 = 15.0;
-    public static final double kL3 = 28.0;
-    public static final double kL4 = 59.0;
+    public static final double kL2 = 13.0;
+    public static final double kL3 = 29.0;
+    public static final double kL4 = 57.0;
 
     //Elevator gear ratio is 12:1
     public static final double kElevTestSpeed = 0.1;
@@ -168,6 +168,8 @@ public final class Constants {
     public static final int kIntakeID = 13;
     public static final int kBreakBeam1ID = 0;
 
-    public static final double kActuatorSpeed = 0.75;
+    public static final double kActuatorSpeed = 0.60;
+    public static final double kAutoActuatorSpeed = 0.35;
+
   }
 }

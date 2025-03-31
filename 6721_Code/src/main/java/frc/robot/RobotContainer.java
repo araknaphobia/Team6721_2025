@@ -70,7 +70,7 @@ public class RobotContainer {
             () -> m_robotDrive.drive(
                 MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                 MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
   }
@@ -92,17 +92,17 @@ public class RobotContainer {
       () -> m_robotDrive.setX(), 
       m_robotDrive));
     
-    m_driverController.rightBumper().whileTrue(m_Actuator.load());
+    m_driverController.rightBumper().whileTrue(m_Actuator.purge());
 
     m_driverController.rightTrigger().whileTrue(m_Actuator.score());
             
-    m_driverController.leftTrigger().whileTrue(m_Actuator.purge());
+    m_driverController.leftTrigger().whileTrue(m_Actuator.load());
 
     m_driverController.a().whileTrue(m_ElevatorSubsystem.autoMoveElevatorL4());
 
-    m_driverController.x().whileTrue(m_ElevatorSubsystem.elevatorDown());
+    m_driverController.x().whileTrue(m_ClimberSubsystem.Down());
 
-    m_driverController.y().whileTrue(m_ElevatorSubsystem.elevatorUp());
+    m_driverController.y().whileTrue(m_ClimberSubsystem.Climb());
 
     
 
@@ -144,8 +144,16 @@ public class RobotContainer {
         // Pass through these two interior waypoints, making straight line
         List.of(new Translation2d(.25, 0 ), new Translation2d(1, 0)),
         // End 1.5 meters straight ahead of where we started, facing forward
-        new Pose2d(1.5, 0, new Rotation2d(0)),
+        new Pose2d(1.4, 0, new Rotation2d(-0.098)),
         config);
+    Trajectory leftTrajectory = TrajectoryGenerator.generateTrajectory(
+          // Start at the origin facing the +X direction
+          new Pose2d(0, 0, new Rotation2d(0)),
+          // Pass through these two interior waypoints, making straight line
+          List.of(new Translation2d(.25, .75 ), new Translation2d(1, 1.5)),
+          // End 1.5 meters straight ahead of where we started, facing forward
+          new Pose2d(2, 2.75, new Rotation2d(45)),
+          config);    
 
     var thetaController = new ProfiledPIDController(
         AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
@@ -171,9 +179,10 @@ public class RobotContainer {
     return swerveControllerCommand.andThen(m_ElevatorSubsystem.setSetpointCommand(Setpoint.kL4))
                                   .andThen(() -> m_robotDrive.drive(0, 0, 0, false))
                                   .andThen(m_Actuator.AutoWait())
-                                  .andThen(() -> m_Actuator.ActuatorIn())
+                                  .andThen(() -> m_Actuator.ActuatorAuto())
                                   .andThen(m_Actuator.AutoWait())
                                   .andThen(() -> m_Actuator.StopActuator());
+                                  
                                   
                               
   }
