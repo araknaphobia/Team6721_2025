@@ -153,7 +153,15 @@ public class RobotContainer {
           List.of(new Translation2d(.25, .75 ), new Translation2d(1, 1.5)),
           // End 1.5 meters straight ahead of where we started, facing forward
           new Pose2d(2, 2.75, new Rotation2d(45)),
-          config);    
+          config);  
+    Trajectory rightTrajectory = TrajectoryGenerator.generateTrajectory(
+            // Start at the origin facing the +X direction
+            new Pose2d(0, 0, new Rotation2d(0)),
+            // Pass through these two interior waypoints, making straight line
+            List.of(new Translation2d(.25, -.75 ), new Translation2d(1, -1.5)),
+            // End 1.5 meters straight ahead of where we started, facing forward
+            new Pose2d(2, -2.75, new Rotation2d(-45)),
+            config);            
 
     var thetaController = new ProfiledPIDController(
         AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);

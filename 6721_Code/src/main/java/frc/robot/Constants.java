@@ -115,7 +115,7 @@ public final class Constants {
     public static final int kClimberID = 10;
     public static final int kPhotoID = 1;
 
-    public static final double kClimbSpeed = .85;
+    public static final double kClimbSpeed = .5;
 
     public static final double kClimbPos = 190;
     public static final double kStow = 0.0;
